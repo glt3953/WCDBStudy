@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "MessageManager.h"
+#import "DatabaseManager.h"
 
 @interface ViewController ()
 
@@ -57,9 +57,9 @@
 }
 
 - (IBAction)createButtonDidClicked:(id)sender {
-    NSString *databaseName = @"message";
-    BOOL result = [[MessageManager shareInstance] createDatabaseWithName:databaseName];
-    NSLog(@"创建数据库%@%@", databaseName, result ? @"成功" : @"失败");
+    NSString *tableName = @"message";
+    BOOL result = [[DatabaseManager shareInstance] createDatabaseWithTableName:tableName];
+    NSLog(@"创建数据表%@%@", tableName, result ? @"成功" : @"失败");
 }
 
 - (IBAction)insertButtonDidClicked:(id)sender {
@@ -70,25 +70,32 @@
     message.createTime = [NSDate date];
     message.modifiedTime = [NSDate date];
     
-    BOOL result = [[MessageManager shareInstance] insertDatabaseWithMessage:message];
-    NSLog(@"localID为%d的数据插入%@", localID, result ? @"成功" : @"失败");
+    /*
+     INSERT INTO message(localID, content, createTime, modifiedTime)
+     VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
+     */
+    NSString *tableName = @"message";
+    BOOL result = [[DatabaseManager shareInstance] insertDatabaseWithObject:message tableName:tableName];
+    NSLog(@"表%@中localID为%d的数据插入%@", tableName, localID, result ? @"成功" : @"失败");
     localID++;
 }
 
 - (IBAction)deleteButtonDidClicked:(id)sender {
     static int localID = 1;
-    BOOL result = [[MessageManager shareInstance] deleteMessageWhere:(Message.localID == localID)];
-    NSLog(@"localID为%d的数据删除%@", localID, result ? @"成功" : @"失败");
+    //DELETE FROM message WHERE localID>0;
+    NSString *tableName = @"message";
+    BOOL result = [[DatabaseManager shareInstance] deleteDatabaseWhere:(Message.localID == localID) tableName:tableName];
+    NSLog(@"表%@中localID为%d的数据删除%@", tableName, localID, result ? @"成功" : @"失败");
     localID++;
 }
 
 - (IBAction)selectButtonDidClicked:(id)sender {
-    NSArray *array = [[MessageManager shareInstance] selectMessage];
+    NSArray *array = [[DatabaseManager shareInstance] selectMessage];
     NSLog(@"查询结果：%@", array);
 }
 
 - (IBAction)updateButtonDidClicked:(id)sender {
-    BOOL result = [[MessageManager shareInstance] updateMessage];
+    BOOL result = [[DatabaseManager shareInstance] updateMessage];
     NSLog(@"%@", result ? @"修改数据成功" : @"修改数据失败");
 }
 

@@ -1,33 +1,34 @@
 //
-//  MessageManager.m
+//  DatabaseManager.m
 //  WCDBStudy
 //
 //  Created by guoliting on 2017/11/8.
 //  Copyright © 2017年 NingXia. All rights reserved.
 //
 
-#import "MessageManager.h"
+#import "DatabaseManager.h"
 
-@interface MessageManager ()
+@interface DatabaseManager ()
 
 @property (nonatomic, strong) WCTDatabase *studyDatabase;
 
 @end
 
-@implementation MessageManager
+@implementation DatabaseManager
 
 + (instancetype)shareInstance {
-    static MessageManager *instance = nil;
+    static DatabaseManager *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[MessageManager alloc] init];
-        [instance createDatabaseWithName:@"message"];
+        instance = [[DatabaseManager alloc] init];
+        [instance createDatabaseWithTableName:@"people"];
+        [instance createDatabaseWithTableName:@"message"];
     });
     
     return instance;
 }
 
-- (BOOL)createDatabaseWithName:(NSString *)tableName {
+- (BOOL)createDatabaseWithTableName:(NSString *)tableName {
     //获取沙盒根目录
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     
@@ -66,15 +67,11 @@
      INSERT INTO message(localID, content, createTime, modifiedTime)
      VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
      */
-    return [self insertDatabaseWithMessage:message];
+    return [self insertDatabaseWithObject:message tableName:@"message"];
 }
 
-- (BOOL)insertDatabaseWithMessage:(Message *)message {
-    /*
-     INSERT INTO message(localID, content, createTime, modifiedTime)
-     VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
-     */
-    return [_studyDatabase insertObject:message into:@"message"];
+- (BOOL)insertDatabaseWithObject:(WCTObject *)object tableName:(NSString *)tableName {
+    return [_studyDatabase insertObject:object into:tableName];
 }
 
 // WCTDatabase 事务操作，利用WCTTransaction
@@ -102,15 +99,13 @@
     return commit;
 }
 
-- (BOOL)deleteMessage {
-    //删除
-    //DELETE FROM message WHERE localID>0;
-    return [self deleteMessageWhere:Message.localID > 0];
+- (BOOL)deleteMessageWhere:(const WCTCondition &)condition {
+    
+    return [_studyDatabase deleteObjectsFromTable:@"message" where:condition];
 }
 
-- (BOOL)deleteMessageWhere:(const WCTCondition &)condition {
-    //DELETE FROM message WHERE localID>0;
-    return [_studyDatabase deleteObjectsFromTable:@"message" where:condition];
+- (BOOL)deleteDatabaseWhere:(const WCTCondition &)condition tableName:(NSString *)tableName {
+    return [_studyDatabase deleteObjectsFromTable:tableName where:condition];
 }
 
 - (BOOL)updateMessage {

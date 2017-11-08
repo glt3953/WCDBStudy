@@ -1,5 +1,5 @@
 //
-//  MessageManager.h
+//  DatabaseManager.h
 //  WCDBStudy
 //
 //  Created by guoliting on 2017/11/8.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Message+WCTTableCoding.h"
+#import "People+WCTTableCoding.h"
 
-@interface MessageManager : NSObject
+@interface DatabaseManager : NSObject
 
 + (instancetype)shareInstance;
 
@@ -19,13 +20,11 @@
  @param tableName 表名称
  @return 是否创建成功
  */
-- (BOOL)createDatabaseWithName:(NSString *)tableName;
+- (BOOL)createDatabaseWithTableName:(NSString *)tableName;
 
-- (BOOL)insertMessage;
-- (BOOL)insertDatabaseWithMessage:(Message *)message;
+- (BOOL)insertDatabaseWithObject:(WCTObject *)object tableName:(NSString *)tableName;
 
-- (BOOL)deleteMessage;
-- (BOOL)deleteMessageWhere:(const WCTCondition &)condition;
+- (BOOL)deleteDatabaseWhere:(const WCTCondition &)condition tableName:(NSString *)tableName;
 
 - (BOOL)updateMessage;
 
