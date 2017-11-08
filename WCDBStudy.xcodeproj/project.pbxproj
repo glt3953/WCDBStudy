@@ -16,6 +16,8 @@
 		F30DFB421FB19C8B00AB25C0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F30DFB411FB19C8B00AB25C0 /* main.m */; };
 		F30DFB4C1FB19C8B00AB25C0 /* WCDBStudyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F30DFB4B1FB19C8B00AB25C0 /* WCDBStudyTests.m */; };
 		F30DFB571FB19C8B00AB25C0 /* WCDBStudyUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F30DFB561FB19C8B00AB25C0 /* WCDBStudyUITests.m */; };
+		F330A9A11FB2E35D006B0BB7 /* Message.mm in Sources */ = {isa = PBXBuildFile; fileRef = F330A9A01FB2E35D006B0BB7 /* Message.mm */; };
+		F330A9A41FB2E376006B0BB7 /* MessageManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = F330A9A31FB2E376006B0BB7 /* MessageManager.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,11 @@
 		F30DFB521FB19C8B00AB25C0 /* WCDBStudyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WCDBStudyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F30DFB561FB19C8B00AB25C0 /* WCDBStudyUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WCDBStudyUITests.m; sourceTree = "<group>"; };
 		F30DFB581FB19C8B00AB25C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F330A99F1FB2E35D006B0BB7 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		F330A9A01FB2E35D006B0BB7 /* Message.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Message.mm; sourceTree = "<group>"; };
+		F330A9A21FB2E376006B0BB7 /* MessageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageManager.h; sourceTree = "<group>"; };
+		F330A9A31FB2E376006B0BB7 /* MessageManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageManager.mm; sourceTree = "<group>"; };
+		F330A9A51FB2E437006B0BB7 /* Message+WCTTableCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Message+WCTTableCoding.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +132,7 @@
 		F30DFB311FB19C8A00AB25C0 /* WCDBStudy */ = {
 			isa = PBXGroup;
 			children = (
+				F330A99E1FB2E35D006B0BB7 /* Message */,
 				F30DFB321FB19C8A00AB25C0 /* AppDelegate.h */,
 				F30DFB331FB19C8A00AB25C0 /* AppDelegate.m */,
 				F30DFB351FB19C8B00AB25C0 /* ViewController.h */,
@@ -154,6 +162,18 @@
 				F30DFB581FB19C8B00AB25C0 /* Info.plist */,
 			);
 			path = WCDBStudyUITests;
+			sourceTree = "<group>";
+		};
+		F330A99E1FB2E35D006B0BB7 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				F330A9A51FB2E437006B0BB7 /* Message+WCTTableCoding.h */,
+				F330A99F1FB2E35D006B0BB7 /* Message.h */,
+				F330A9A01FB2E35D006B0BB7 /* Message.mm */,
+				F330A9A21FB2E376006B0BB7 /* MessageManager.h */,
+				F330A9A31FB2E376006B0BB7 /* MessageManager.mm */,
+			);
+			path = Message;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,7 +364,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F30DFB371FB19C8B00AB25C0 /* ViewController.m in Sources */,
+				F330A9A11FB2E35D006B0BB7 /* Message.mm in Sources */,
 				F30DFB421FB19C8B00AB25C0 /* main.m in Sources */,
+				F330A9A41FB2E376006B0BB7 /* MessageManager.mm in Sources */,
 				F30DFB341FB19C8B00AB25C0 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
