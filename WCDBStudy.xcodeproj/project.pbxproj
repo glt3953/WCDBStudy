@@ -19,6 +19,12 @@
 		F330A9AC1FB30344006B0BB7 /* Message.mm in Sources */ = {isa = PBXBuildFile; fileRef = F330A9A91FB30344006B0BB7 /* Message.mm */; };
 		F330A9AD1FB30344006B0BB7 /* DatabaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = F330A9AB1FB30344006B0BB7 /* DatabaseManager.mm */; };
 		F330A9B01FB30352006B0BB7 /* People.mm in Sources */ = {isa = PBXBuildFile; fileRef = F330A9AF1FB30352006B0BB7 /* People.mm */; };
+		F330A9B71FB30B1E006B0BB7 /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F330A9B51FB30B1E006B0BB7 /* RadioButton.m */; };
+		F330A9B81FB30B1E006B0BB7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F330A9B61FB30B1E006B0BB7 /* README.md */; };
+		F330A9BE1FB30C31006B0BB7 /* checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F330A9BA1FB30C31006B0BB7 /* checked@2x.png */; };
+		F330A9BF1FB30C31006B0BB7 /* checked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F330A9BB1FB30C31006B0BB7 /* checked@3x.png */; };
+		F330A9C01FB30C31006B0BB7 /* unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F330A9BC1FB30C31006B0BB7 /* unchecked@2x.png */; };
+		F330A9C11FB30C31006B0BB7 /* unchecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F330A9BD1FB30C31006B0BB7 /* unchecked@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +72,13 @@
 		F330A9AE1FB30352006B0BB7 /* People.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = People.h; sourceTree = "<group>"; };
 		F330A9AF1FB30352006B0BB7 /* People.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = People.mm; sourceTree = "<group>"; };
 		F330A9B11FB30432006B0BB7 /* People+WCTTableCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "People+WCTTableCoding.h"; sourceTree = "<group>"; };
+		F330A9B41FB30B1E006B0BB7 /* RadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioButton.h; sourceTree = "<group>"; };
+		F330A9B51FB30B1E006B0BB7 /* RadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioButton.m; sourceTree = "<group>"; };
+		F330A9B61FB30B1E006B0BB7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F330A9BA1FB30C31006B0BB7 /* checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked@2x.png"; sourceTree = "<group>"; };
+		F330A9BB1FB30C31006B0BB7 /* checked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked@3x.png"; sourceTree = "<group>"; };
+		F330A9BC1FB30C31006B0BB7 /* unchecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unchecked@2x.png"; sourceTree = "<group>"; };
+		F330A9BD1FB30C31006B0BB7 /* unchecked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unchecked@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +149,8 @@
 		F30DFB311FB19C8A00AB25C0 /* WCDBStudy */ = {
 			isa = PBXGroup;
 			children = (
+				F330A9B91FB30C31006B0BB7 /* radio-res-ios */,
+				F330A9B31FB30B1E006B0BB7 /* RadioButton */,
 				F330A9A61FB30344006B0BB7 /* Database */,
 				F30DFB321FB19C8A00AB25C0 /* AppDelegate.h */,
 				F30DFB331FB19C8A00AB25C0 /* AppDelegate.m */,
@@ -181,6 +196,27 @@
 				F330A9AF1FB30352006B0BB7 /* People.mm */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		F330A9B31FB30B1E006B0BB7 /* RadioButton */ = {
+			isa = PBXGroup;
+			children = (
+				F330A9B41FB30B1E006B0BB7 /* RadioButton.h */,
+				F330A9B51FB30B1E006B0BB7 /* RadioButton.m */,
+				F330A9B61FB30B1E006B0BB7 /* README.md */,
+			);
+			path = RadioButton;
+			sourceTree = "<group>";
+		};
+		F330A9B91FB30C31006B0BB7 /* radio-res-ios */ = {
+			isa = PBXGroup;
+			children = (
+				F330A9BA1FB30C31006B0BB7 /* checked@2x.png */,
+				F330A9BB1FB30C31006B0BB7 /* checked@3x.png */,
+				F330A9BC1FB30C31006B0BB7 /* unchecked@2x.png */,
+				F330A9BD1FB30C31006B0BB7 /* unchecked@3x.png */,
+			);
+			path = "radio-res-ios";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,8 +328,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F330A9C11FB30C31006B0BB7 /* unchecked@3x.png in Resources */,
 				F30DFB3F1FB19C8B00AB25C0 /* LaunchScreen.storyboard in Resources */,
+				F330A9BE1FB30C31006B0BB7 /* checked@2x.png in Resources */,
 				F30DFB3C1FB19C8B00AB25C0 /* Assets.xcassets in Resources */,
+				F330A9C01FB30C31006B0BB7 /* unchecked@2x.png in Resources */,
+				F330A9BF1FB30C31006B0BB7 /* checked@3x.png in Resources */,
+				F330A9B81FB30B1E006B0BB7 /* README.md in Resources */,
 				F30DFB3A1FB19C8B00AB25C0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -376,6 +417,7 @@
 				F30DFB421FB19C8B00AB25C0 /* main.m in Sources */,
 				F30DFB341FB19C8B00AB25C0 /* AppDelegate.m in Sources */,
 				F330A9AC1FB30344006B0BB7 /* Message.mm in Sources */,
+				F330A9B71FB30B1E006B0BB7 /* RadioButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

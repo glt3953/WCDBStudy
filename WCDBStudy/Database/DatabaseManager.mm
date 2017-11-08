@@ -45,7 +45,7 @@
         // 先判断表是不是已经存在
         if ([_studyDatabase isOpened]) {
             if ([_studyDatabase isTableExists:tableName]) {
-                NSLog(@"表已经存在");
+                NSLog(@"%@表已经存在", tableName);
                 return NO;
             } else {
                 return [_studyDatabase createTableAndIndexesOfName:tableName withClass:Message.class];
