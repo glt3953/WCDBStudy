@@ -7,7 +7,6 @@
 //
 
 #import "MessageManager.h"
-#import "Message+WCTTableCoding.h"
 
 @interface MessageManager ()
 
@@ -22,6 +21,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[MessageManager alloc] init];
+        [instance createDatabaseWithName:@"message"];
     });
     
     return instance;
@@ -66,6 +66,14 @@
      INSERT INTO message(localID, content, createTime, modifiedTime)
      VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
      */
+    return [self insertDatabaseWithMessage:message];
+}
+
+- (BOOL)insertDatabaseWithMessage:(Message *)message {
+    /*
+     INSERT INTO message(localID, content, createTime, modifiedTime)
+     VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
+     */
     return [_studyDatabase insertObject:message into:@"message"];
 }
 
@@ -97,7 +105,12 @@
 - (BOOL)deleteMessage {
     //删除
     //DELETE FROM message WHERE localID>0;
-    return [_studyDatabase deleteObjectsFromTable:@"message" where:Message.localID > 0];
+    return [self deleteMessageWhere:Message.localID > 0];
+}
+
+- (BOOL)deleteMessageWhere:(const WCTCondition &)condition {
+    //DELETE FROM message WHERE localID>0;
+    return [_studyDatabase deleteObjectsFromTable:@"message" where:condition];
 }
 
 - (BOOL)updateMessage {

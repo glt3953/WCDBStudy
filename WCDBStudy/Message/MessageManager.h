@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Message+WCTTableCoding.h"
 
 @interface MessageManager : NSObject
 
@@ -21,8 +22,10 @@
 - (BOOL)createDatabaseWithName:(NSString *)tableName;
 
 - (BOOL)insertMessage;
+- (BOOL)insertDatabaseWithMessage:(Message *)message;
 
 - (BOOL)deleteMessage;
+- (BOOL)deleteMessageWhere:(const WCTCondition &)condition;
 
 - (BOOL)updateMessage;
 
