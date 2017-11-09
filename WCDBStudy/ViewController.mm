@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIButton *selectButton;
 @property (nonatomic, strong) UIButton *updateButton;
 @property (nonatomic, copy) NSString *tableName;
+@property (nonatomic, copy) NSArray *tableManagers;
 
 @end
 
@@ -27,18 +28,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSArray *tableNames = @[@"message", @"people"];
+    _tableManagers = @[@{@"table":@"message", @"manager":@"MessageManager"}, @{@"table":@"people", @"manager":@"PeopleManager"}];
     CGFloat originX = 20;
     static CGFloat originY = 44 + 20 + 20;
     CGFloat subviewWidth = 100;
     CGFloat subviewHeight = 30;
-    NSMutableArray *buttons = [NSMutableArray arrayWithCapacity:tableNames.count];
+    NSMutableArray *buttons = [NSMutableArray arrayWithCapacity:_tableManagers.count];
     CGRect btnRect = (CGRect){originX, originY, subviewWidth, subviewHeight};
-    for (NSString *tableName in tableNames) {
+    for (NSDictionary *tableManager in _tableManagers) {
         RadioButton *btn = [[RadioButton alloc] initWithFrame:btnRect];
         [btn addTarget:self action:@selector(onRadioButtonValueChanged:) forControlEvents:UIControlEventValueChanged];
         btnRect.origin.x += subviewWidth + 20;
-        [btn setTitle:tableName ?: @"无" forState:UIControlStateNormal];
+        [btn setTitle:tableManager ? tableManager[@"table"] : @"无" forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont boldSystemFontOfSize:15];
         [btn setImage:[UIImage imageNamed:@"unchecked.png"] forState:UIControlStateNormal];
@@ -50,7 +51,7 @@
     }
     [buttons[0] setGroupButtons:buttons]; // Setting buttons into the group
     [buttons[0] setSelected:YES]; // Making the first button initially selected
-    _tableName = tableNames[0];
+    _tableName = _tableManagers[0][@"table"];
     
     _createButton = [self buttonWithTitle:@"创建数据库" action:@selector(createButtonDidClicked:)];
     [self.view addSubview:_createButton];
@@ -91,34 +92,76 @@
     return button;
 }
 
+- (NSString *)managerName {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"table=%@", _tableName]; //实现数组的快速查询
+    if (predicate) {
+        NSArray *filteredArray = [_tableManagers filteredArrayUsingPredicate:predicate];
+        if (filteredArray.count > 0) {
+            return filteredArray[0][@"manager"];
+        }
+    }
+    
+    return @"";
+}
+
 - (IBAction)createButtonDidClicked:(id)sender {
     BOOL result = [[DatabaseManager shareInstance] createDatabaseWithTableName:_tableName];
     NSLog(@"创建数据表%@%@", _tableName, result ? @"成功" : @"失败");
 }
 
 - (IBAction)insertButtonDidClicked:(id)sender {
-    static int localID = 1;
-    Message *message = [[Message alloc] init];
-    message.localID = localID;
-    message.content = [@"Hello, WCDB!" stringByAppendingFormat:@"%d", localID];
-    message.createTime = [NSDate date];
-    message.modifiedTime = [NSDate date];
-    
-    /*
-     INSERT INTO message(localID, content, createTime, modifiedTime)
-     VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
-     */
-    BOOL result = [[DatabaseManager shareInstance] insertDatabaseWithObject:message tableName:_tableName];
-    NSLog(@"表%@中localID为%d的数据插入%@", _tableName, localID, result ? @"成功" : @"失败");
-    localID++;
+    WCTObject *object;
+    int index = 0;
+    if ([_tableName isEqualToString:@"message"]) {
+        static int localID = 1;
+        /*
+         INSERT INTO message(localID, content, createTime, modifiedTime)
+         VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
+         */
+        Message *message = [[Message alloc] init];
+        message.localID = localID;
+        message.content = [@"Hello, WCDB!" stringByAppendingFormat:@"%d", localID];
+        message.createTime = [NSDate date];
+        message.modifiedTime = [NSDate date];
+        object = message;
+        index = localID;
+        localID++;
+    } else if ([_tableName isEqualToString:@"people"]) {
+        static int localID = 1;
+        /*
+         INSERT INTO people(localID, name, sex, age, createTime, modifiedTime)
+         VALUES(1, "people", 1, 21, 1496396165, 1496396165);
+         */
+        People *people = [[People alloc] init];
+        people.localID = localID;
+        people.name = [@"people" stringByAppendingFormat:@"%d", localID];
+        people.sex = localID % 2;
+        people.age = 20 + localID;
+        people.createTime = [NSDate date];
+        people.modifiedTime = [NSDate date];
+        object = people;
+        index = localID;
+        localID++;
+    }
+    BOOL result = [[DatabaseManager shareInstance] insertDatabaseWithObject:object tableName:_tableName];
+    NSLog(@"表%@中localID为%d的数据插入%@", _tableName, index, result ? @"成功" : @"失败");
 }
 
 - (IBAction)deleteButtonDidClicked:(id)sender {
-    static int localID = 1;
-    //DELETE FROM message WHERE localID>0;
-    BOOL result = [[DatabaseManager shareInstance] deleteDatabaseWhere:(Message.localID == localID) tableName:_tableName];
-    NSLog(@"表%@中localID为%d的数据删除%@", _tableName, localID, result ? @"成功" : @"失败");
-    localID++;
+    int index = 0;
+    if ([_tableName isEqualToString:@"message"]) {
+        static int localID = 1;
+        //DELETE FROM message WHERE localID=1;
+        index = localID;
+        localID++;
+    } else if ([_tableName isEqualToString:@"people"]) {
+        static int localID = 1;
+        //DELETE FROM people WHERE localID=1;
+        index = localID;
+        localID++;
+    }
+    BOOL result = [[DatabaseManager shareInstance] deleteDatabaseWhere:[_tableName isEqualToString:@"message"] ? Message.localID : People.localID == index tableName:_tableName];
+    NSLog(@"表%@中localID为%d的数据删除%@", _tableName, index, result ? @"成功" : @"失败");
 }
 
 - (IBAction)selectButtonDidClicked:(id)sender {

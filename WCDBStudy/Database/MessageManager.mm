@@ -1,34 +1,33 @@
 //
-//  DatabaseManager.m
+//  MessageManager.m
 //  WCDBStudy
 //
 //  Created by guoliting on 2017/11/8.
 //  Copyright © 2017年 NingXia. All rights reserved.
 //
 
-#import "DatabaseManager.h"
+#import "MessageManager.h"
 
-@interface DatabaseManager ()
+@interface MessageManager ()
 
 @property (nonatomic, strong) WCTDatabase *studyDatabase;
 
 @end
 
-@implementation DatabaseManager
+@implementation MessageManager
 
 + (instancetype)shareInstance {
-    static DatabaseManager *instance = nil;
+    static MessageManager *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[DatabaseManager alloc] init];
-        [instance createDatabaseWithTableName:@"people"];
-        [instance createDatabaseWithTableName:@"message"];
+        instance = [[MessageManager alloc] init];
+        [instance createTable];
     });
     
     return instance;
 }
 
-- (BOOL)createDatabaseWithTableName:(NSString *)tableName {
+- (BOOL)createTable {
     //获取沙盒根目录
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     
@@ -44,15 +43,11 @@
         // WCDB大量使用延迟初始化（Lazy initialization）的方式管理对象，因此SQLite连接会在第一次被访问时被打开。开发者不需要手动打开数据库。
         // 先判断表是不是已经存在
         if ([_studyDatabase isOpened]) {
-            if ([_studyDatabase isTableExists:tableName]) {
-                NSLog(@"%@表已经存在", tableName);
+            if ([_studyDatabase isTableExists:@"message"]) {
+                NSLog(@"message表已经存在");
                 return NO;
             } else {
-                if ([tableName isEqualToString:@"message"]) {
-                    return [_studyDatabase createTableAndIndexesOfName:tableName withClass:Message.class];
-                } else if ([tableName isEqualToString:@"people"]) {
-                    return [_studyDatabase createTableAndIndexesOfName:tableName withClass:People.class];
-                }
+                return [_studyDatabase createTableAndIndexesOfName:@"message" withClass:Message.class];
             }
         }
     }
@@ -71,11 +66,11 @@
      INSERT INTO message(localID, content, createTime, modifiedTime)
      VALUES(1, "Hello, WCDB!", 1496396165, 1496396165);
      */
-    return [self insertDatabaseWithObject:message tableName:@"message"];
+    return [self insertObject:message];
 }
 
-- (BOOL)insertDatabaseWithObject:(WCTObject *)object tableName:(NSString *)tableName {
-    return [_studyDatabase insertObject:object into:tableName];
+- (BOOL)insertObject:(WCTObject *)object {
+    return [_studyDatabase insertObject:object into:@"message"];
 }
 
 // WCTDatabase 事务操作，利用WCTTransaction
@@ -103,13 +98,8 @@
     return commit;
 }
 
-- (BOOL)deleteMessageWhere:(const WCTCondition &)condition {
-    
+- (BOOL)deleteObjectWhere:(const WCTCondition &)condition {
     return [_studyDatabase deleteObjectsFromTable:@"message" where:condition];
-}
-
-- (BOOL)deleteDatabaseWhere:(const WCTCondition &)condition tableName:(NSString *)tableName {
-    return [_studyDatabase deleteObjectsFromTable:tableName where:condition];
 }
 
 - (BOOL)updateMessage {
@@ -123,12 +113,18 @@
     return [_studyDatabase updateAllRowsInTable:@"message" onProperty:Message.content withObject:message];
 }
 
+- (BOOL)updateObjectOnProperties:(const WCTPropertyList &)propertyList
+                          withRow:(WCTOneRow *)row
+                            where:(const WCTCondition &)condition {
+    return [_studyDatabase updateRowsInTable:@"message" onProperties:propertyList withRow:row where:condition];
+}
+
 //查询
-- (NSArray *)selectMessage {
+- (NSArray *)selectObjects {
     //SELECT * FROM message ORDER BY localID
-    NSArray<Message *> * message = [_studyDatabase getObjectsOfClass:Message.class fromTable:@"message" orderBy:Message.localID.order()];
+    NSArray<Message *> * messages = [_studyDatabase getObjectsOfClass:Message.class fromTable:@"message" orderBy:Message.localID.order()];
     
-    return message;
+    return messages;
 }
 
 @end
