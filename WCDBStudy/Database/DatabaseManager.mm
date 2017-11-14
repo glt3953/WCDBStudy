@@ -123,12 +123,22 @@
     return [_studyDatabase updateAllRowsInTable:@"message" onProperty:Message.content withObject:message];
 }
 
+- (BOOL)updateDatabaseWithTableName:(NSString *)tableName onProperties:(const WCTPropertyList &)properties withObject:(WCTObject *)object where:(const WCTCondition &)condition {
+    return [_studyDatabase updateRowsInTable:tableName onProperties:properties withObject:object where:condition];
+}
+
 //查询
-- (NSArray *)selectMessage {
-    //SELECT * FROM message ORDER BY localID
-    NSArray<Message *> * message = [_studyDatabase getObjectsOfClass:Message.class fromTable:@"message" orderBy:Message.localID.order()];
+- (NSArray *)selectDatabaseWithTableName:(NSString *)tableName {
+    NSArray<WCTObject *> *objects;
+    if ([tableName isEqualToString:@"message"]) {
+        //SELECT * FROM message ORDER BY localID
+        objects = [_studyDatabase getObjectsOfClass:Message.class fromTable:tableName orderBy:Message.localID.order()];
+    } else if ([tableName isEqualToString:@"people"]) {
+        //SELECT * FROM people ORDER BY localID
+        objects = [_studyDatabase getObjectsOfClass:People.class fromTable:tableName orderBy:People.localID.order()];
+    }
     
-    return message;
+    return objects;
 }
 
 @end

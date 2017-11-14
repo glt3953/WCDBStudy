@@ -165,13 +165,33 @@
 }
 
 - (IBAction)selectButtonDidClicked:(id)sender {
-    NSArray *array = [[DatabaseManager shareInstance] selectMessage];
-    NSLog(@"查询结果：%@", array);
+    NSArray *array = [[DatabaseManager shareInstance] selectDatabaseWithTableName:_tableName];
+    for (WCTObject *object in array) {
+        NSLog(@"表%@的数据%@", _tableName, object);
+    }
 }
 
 - (IBAction)updateButtonDidClicked:(id)sender {
-    BOOL result = [[DatabaseManager shareInstance] updateMessage];
-    NSLog(@"%@", result ? @"修改数据成功" : @"修改数据失败");
+    BOOL result = NO;
+    int index = 0;
+    if ([_tableName isEqualToString:@"message"]) {
+        static int localID = 1;
+        Message *message = [[Message alloc] init];
+        message.content = [@"Hello, WCDB!" stringByAppendingFormat:@"%d", localID + 1];
+        //UPDATE message SET content="Hello, Wechat!"+localID+1 WHERE localID=localID;
+        result = [[DatabaseManager shareInstance] updateDatabaseWithTableName:_tableName onProperties:Message.content withObject:message where:Message.localID == localID];
+        index = localID;
+        localID++;
+    } else if ([_tableName isEqualToString:@"people"]) {
+        static int localID = 1;
+        People *people = [[People alloc] init];
+        people.name = [@"people" stringByAppendingFormat:@"%d", localID + 1];
+        //UPDATE people SET content="people"+localID+1 WHERE localID=localID;
+        result = [[DatabaseManager shareInstance] updateDatabaseWithTableName:_tableName onProperties:People.name withObject:people where:People.localID == localID];
+        index = localID;
+        localID++;
+    }
+    NSLog(@"表%@中localID为%d的数据修改%@", _tableName, index, result ? @"成功" : @"失败");
 }
 
 - (void)didReceiveMemoryWarning {

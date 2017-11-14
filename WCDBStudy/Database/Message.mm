@@ -27,4 +27,7 @@ WCDB_PRIMARY(Message, localID)
 // 同时 WCDB 会将表名 + "_index" 作为该索引的名称
 WCDB_INDEX(Message, "_index", createTime)
 
+// 定义非空约束
+WCDB_NOT_NULL(Message, localID)
+
 @end

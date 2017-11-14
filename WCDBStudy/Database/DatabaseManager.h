@@ -26,8 +26,8 @@
 
 - (BOOL)deleteDatabaseWhere:(const WCTCondition &)condition tableName:(NSString *)tableName;
 
-- (BOOL)updateMessage;
+- (BOOL)updateDatabaseWithTableName:(NSString *)tableName onProperties:(const WCTPropertyList &)properties withObject:(WCTObject *)object where:(const WCTCondition &)condition;
 
-- (NSArray *)selectMessage;
+- (NSArray *)selectDatabaseWithTableName:(NSString *)tableName;
 
 @end
